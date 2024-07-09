@@ -1,0 +1,6 @@
+numpy
+imageio
+lpips
+scipy==1.11
+tqdm
+pyparsing

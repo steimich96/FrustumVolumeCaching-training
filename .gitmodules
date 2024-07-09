@@ -1,0 +1,7 @@
+[submodule "src/pycolmap"]
+	path = src/pycolmap
+	url = https://github.com/rmbrualla/pycolmap.git
+[submodule "submodule.src/pycolmap.path"]
+	path = src/pycolmap
+	url = https://github.com/rmbrualla/pycolmap.git
+	branch = master
