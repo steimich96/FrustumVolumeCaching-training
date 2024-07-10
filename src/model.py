@@ -1,3 +1,8 @@
+"""
+Copyright (C) 2024, Michael Steiner, Graz University of Technology.
+This code is licensed under the MIT license.
+"""
+
 from typing import Callable, List, Union
 
 import numpy as np
@@ -26,7 +31,8 @@ trunc_exp = _TruncExp.apply
 def contract_to_unisphere(
     x: torch.Tensor,
     aabb: torch.Tensor,
-    ord: Union[float, int] = 2):
+    ord: Union[float, int] = 2,
+):
     """MipNerf-360 style contraction: x if norm(x) < 1 else warp(x)"""
     aabb_min, aabb_max = torch.split(aabb, 3, dim=-1)
     x = (x - aabb_min) / (aabb_max - aabb_min)
@@ -41,15 +47,12 @@ def contract_to_unisphere(
 
 def frequency_encoding(opt, input, L):  # [B,...,N]
     shape = input.shape
-    freq = (
-        2 ** torch.arange(L, dtype=torch.float32, device=opt.device) * np.pi
-    )  # [L]
+    freq = (2 ** torch.arange(L, dtype=torch.float32, device=opt.device) * np.pi)  # [L]
     spectrum = input[..., None] * freq  # [B,...,N,L]
     sin, cos = spectrum.sin(), spectrum.cos()  # [B,...,N,L]
     input_enc = torch.stack([sin, cos], dim=-2)  # [B,...,N,2,L]
     input_enc = input_enc.view(*shape[:-1], -1)  # [B,...,2NL]
     return input_enc
-
 
 def contract_to_aabb(
     x: torch.Tensor,
@@ -337,8 +340,6 @@ class InterNerf(torch.nn.Module):
         if self.separate_density_network:
             x_density_enc = self.density_encoding(x.view(-1, 3)) if self.separate_density_encoding else x_enc
             density_before_activation = self.density_network(x_density_enc if self.density_network_tcnn else x_density_enc.to(x))
-            # assert density_before_activation.isfinite().all()
-            # assert (torch.abs(density_before_activation) < 1e3).all()
             density = trunc_exp(density_before_activation.to(x))
 
         if self.use_mlp_base and not (self.separate_density_network and only_density):
@@ -362,8 +363,6 @@ class InterNerf(torch.nn.Module):
         
     def _forward_head(self, init_viewdir, viewdir, latents, pos = None):
         enc_viewdir = self.viewdir_encoding_large(normalize_viewdir(viewdir).reshape(-1, 3))
-        # assert latents.isfinite().all()
-        # assert (torch.abs(latents) < 1e3).all()
         mlp_head_input = torch.concat([latents.reshape(-1, self.n_latents), enc_viewdir[..., self.sh_large_coeff_offset:]], dim=-1)
         
         if self.split_mlp_head:

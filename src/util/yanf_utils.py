@@ -1,6 +1,9 @@
+"""
+Copyright (C) 2024, Michael Steiner, Graz University of Technology.
+This code is licensed under the MIT license.
+"""
+ 
 import itertools
-from typing import Optional, Tuple
-
 import torch
 
 def spherical_to_cartesian(phi: torch.Tensor, theta: torch.Tensor) -> torch.Tensor:
@@ -26,7 +29,6 @@ def rotate_z_to_vector(z_directions: torch.Tensor, rotation_vector: torch.Tensor
 
     result = (z_directions.unsqueeze(-2) @ rotation_matrix).squeeze(-2)
     result[z_minus_1] = -z_directions[z_minus_1]
-
     return result
 
 

@@ -1,3 +1,8 @@
+"""
+Copyright (C) 2024, Michael Steiner, Graz University of Technology.
+This code is licensed under the MIT license.
+"""
+
 import math
 
 from typing import Callable, Dict, Optional, Tuple
@@ -27,7 +32,6 @@ class GradientScaler(torch.autograd.Function):
         scaling = torch.square(ray_dist).clamp(0, 1)
         return grad_value * (scaling if grad_value.shape[-1] == scaling.shape[-1] else scaling.unsqueeze(-1)) , grad_output_ray_dist
 
-
 def to_stepping_space(t, cone_angle, dt_min, near_plane):
     log1p_c = math.log(1.0 + cone_angle)
 
@@ -38,7 +42,6 @@ def to_stepping_space(t, cone_angle, dt_min, near_plane):
     stepping_t = torch.where(t > t_step_min, torch.log(t / t_step_min) / log1p_c + step_min, (t - near_plane) / dt_min)
 
     return stepping_t
-
 
 def to_normalized_stepping_space(t, cone_angle, dt_min, near_plane, far_plane):
     return to_stepping_space(t, cone_angle, dt_min, near_plane) / to_stepping_space(torch.tensor(far_plane), cone_angle, dt_min, near_plane)
