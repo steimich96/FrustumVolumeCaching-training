@@ -1,8 +1,20 @@
 # Frustum Volume Caching for Accelerated NeRF Rendering - Training Framework
 
+Authors: [Michael Steiner](https://steimich96.github.io),
+[Thomas Köhler](https://online.tugraz.at/tug_online/visitenkarte.show_vcard?pPersonenGruppe=3&pPersonenId=ABF48312D534DD6E),
+[Lukas Radl](https://r4dl.github.io/),
+[Markus Steinberger](https://www.markussteinberger.net/)
+<br>
+
 This project contains the NeRF training framework, discussed in the HPG 2024 paper "Frustum Volume Caching for Accelerated NeRF Rendering".
 
 ![Teaser image](docs/teaser.png)
+
+[Webpage](https://steimich96.github.io/FrustumVolumeCaching) 
+| [Viewer Code (Github)](https://github.com/steimich96/FrustumVolumeCaching) 
+| [Video](https://www.youtube.com/watch?v=zCjIYewmeaQ)
+| [Pre-trained Models](https://cloud.tugraz.at/index.php/s/yL4TG3dyXGoNb6N)
+<br>
 
 It contains a pytorch training framework for [Instant-NGP](https://github.com/NVlabs/instant-ngp) models, based on [Nerfacc](https://github.com/nerfstudio-project/nerfacc/tree/master/nerfacc).
 Additionally, it enables training models with our proposed view-dependent cone encoding and z-linearity, as well as other components discussed in the paper.
